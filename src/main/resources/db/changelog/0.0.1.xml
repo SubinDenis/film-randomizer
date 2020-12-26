@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="dshubin">
+        <sql>create schema data</sql>
+        <rollback>
+            <sql>drop schema data</sql>
+        </rollback>
+        <createTable tableName="film" schemaName="data">
+            <column name="film_id"
+                    type="serial"
+                    autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name"
+                    type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="year" type="int"/>
+        </createTable>
+        <createTable tableName="genre" schemaName="data">
+            <column name="genre_id"
+                    type="serial"
+                    autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name"
+                    type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="film_genre" schemaName="data">
+            <column name="film_id"
+                    type="bigint"/>
+            <column name="genre_id"
+                    type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="film_genre"
+                                 baseColumnNames="film_id"
+                                 constraintName="fk_film_id"
+                                 referencedTableName="film"
+                                 referencedColumnNames="film_id"
+                                 baseTableSchemaName="data"
+                                 referencedTableSchemaName="data"/>
+        <addForeignKeyConstraint baseTableName="film_genre"
+                                 baseColumnNames="genre_id"
+                                 constraintName="fk_genre_id"
+                                 referencedTableName="genre"
+                                 referencedColumnNames="genre_id"
+                                 baseTableSchemaName="data"
+                                 referencedTableSchemaName="data"/>
+    </changeSet>
+    <changeSet id="2" author="dshubin">
+        <createSequence sequenceName="film_id_sequence"
+                        schemaName="data"
+                        incrementBy="1"
+                        minValue="1"
+                        maxValue="999999999"
+                        startValue="1"/>
+        <createSequence sequenceName="genre_id_sequence"
+                        schemaName="data"
+                        incrementBy="1"
+                        minValue="1"
+                        maxValue="999999999"
+                        startValue="1"/>
+    </changeSet>
+    <changeSet id="3" author="dshubin">
+        <addColumn tableName="film"
+                   schemaName="data">
+            <column name="source_link"
+                    type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="media_link"
+                    type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
