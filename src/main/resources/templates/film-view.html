@@ -16,10 +16,6 @@
         <td th:text="${film.name}">AAAAAAAAAAAAAAA </td>
     </tr>
     <tr>
-        <td>year: </td>
-        <td th:text="${film.year}">1 </td>
-    </tr>
-    <tr>
         <td>sourceLink: </td>
         <td th:text="${film.sourceLink}">AAAAAAAAAAAAAAAAAAAAAAAAAAAAASS </td>
     </tr>
@@ -28,15 +24,8 @@
         <td th:text="${film.mediaLink}">AAAAAAAAAAAAAAWEQEWEQEQWE </td>
     </tr>
 </table>
-
-<br/>
-
-<form method="POST" enctype="multipart/form-data" action="/integration/send-file">
-    <table>
-        <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-        <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-    </table>
-</form>
+${film.sourceLink}
+<iframe th:attr="src=${film.sourceLink}"></iframe>
 
 </body>
 </html>
