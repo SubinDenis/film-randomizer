@@ -10,6 +10,8 @@
         <rollback>
             <sql>drop schema data</sql>
         </rollback>
+    </changeSet>
+    <changeSet id="2" author="dshubin">
         <createTable tableName="film" schemaName="data">
             <column name="film_id"
                     type="serial"
@@ -20,10 +22,11 @@
                     type="varchar">
                 <constraints nullable="false"/>
             </column>
-            <column name="year" type="int"/>
         </createTable>
-        <createTable tableName="genre" schemaName="data">
-            <column name="genre_id"
+    </changeSet>
+    <changeSet id="3" author="dshubin">
+        <createTable tableName="tag" schemaName="data">
+            <column name="tag_id"
                     type="serial"
                     autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -33,51 +36,41 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="film_genre" schemaName="data">
+    </changeSet>
+    <changeSet id="4" author="dshubin">
+        <createTable tableName="film_tag" schemaName="data">
             <column name="film_id"
                     type="bigint"/>
-            <column name="genre_id"
+            <column name="tag_id"
                     type="bigint"/>
         </createTable>
-        <addForeignKeyConstraint baseTableName="film_genre"
+    </changeSet>
+    <changeSet id="5" author="dshubin">
+        <addForeignKeyConstraint baseTableName="film_tag"
                                  baseColumnNames="film_id"
                                  constraintName="fk_film_id"
                                  referencedTableName="film"
                                  referencedColumnNames="film_id"
                                  baseTableSchemaName="data"
                                  referencedTableSchemaName="data"/>
-        <addForeignKeyConstraint baseTableName="film_genre"
-                                 baseColumnNames="genre_id"
-                                 constraintName="fk_genre_id"
-                                 referencedTableName="genre"
-                                 referencedColumnNames="genre_id"
+    </changeSet>
+    <changeSet id="6" author="dshubin">
+        <addForeignKeyConstraint baseTableName="film_tag"
+                                 baseColumnNames="tag_id"
+                                 constraintName="fk_tag_id"
+                                 referencedTableName="tag"
+                                 referencedColumnNames="tag_id"
                                  baseTableSchemaName="data"
                                  referencedTableSchemaName="data"/>
     </changeSet>
-    <changeSet id="2" author="dshubin">
-        <createSequence sequenceName="film_id_sequence"
-                        schemaName="data"
-                        incrementBy="1"
-                        minValue="1"
-                        maxValue="999999999"
-                        startValue="1"/>
-        <createSequence sequenceName="genre_id_sequence"
-                        schemaName="data"
-                        incrementBy="1"
-                        minValue="1"
-                        maxValue="999999999"
-                        startValue="1"/>
-    </changeSet>
-    <changeSet id="3" author="dshubin">
+    <changeSet id="7" author="dshubin">
         <addColumn tableName="film"
                    schemaName="data">
             <column name="source_link"
                     type="varchar">
-                <constraints nullable="false"/>
             </column>
             <column name="media_link"
                     type="varchar">
-                <constraints nullable="false"/>
             </column>
         </addColumn>
     </changeSet>

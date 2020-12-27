@@ -1,6 +1,7 @@
 package by.personal.filmrandomizer.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "film", schema = "data")
@@ -13,9 +14,6 @@ public class Film {
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "year")
-    private Integer year;
 
     /**
      * Ссылка на страницу, с которой был выдернут фильм.
@@ -33,6 +31,15 @@ public class Film {
         return filmId;
     }
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "film_tag",
+            schema = "data",
+            joinColumns = @JoinColumn(name = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags;
+
     public void setFilmId(Integer filmId) {
         this.filmId = filmId;
     }
@@ -43,14 +50,6 @@ public class Film {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
     }
 
     public String getSourceLink() {
@@ -67,5 +66,13 @@ public class Film {
 
     public void setMediaLink(String mediaLink) {
         this.mediaLink = mediaLink;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

@@ -20,7 +20,6 @@ public class FilmService {
         Film film = new Film();
         film.setMediaLink("123");
         film.setName(LocalDateTime.now().toString());
-        film.setYear(1234);
         film.setSourceLink("asd");
         entityManager.persist(film);
         entityManager.flush();
