@@ -29,4 +29,7 @@ public class FilmService {
         return film.getFilmId();
     }
 
+    public Film getRandom() {
+        return filmDao.getRandom();
+    }
 }

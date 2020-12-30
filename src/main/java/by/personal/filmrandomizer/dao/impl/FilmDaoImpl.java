@@ -5,11 +5,14 @@ import by.personal.filmrandomizer.entity.Film;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Component
 @Transactional
@@ -46,7 +49,27 @@ public class FilmDaoImpl implements FilmDao {
 
     @Override
     public Optional<Film> findBySourceLink(String link) {
-        Query query = em.createQuery("Select f from Film where f.sourceLink == :link");
-        return Optional.ofNullable((Film)query.setParameter("link", link).getSingleResult());
+        Query query = em.createQuery("Select f from Film f where f.sourceLink = :link");
+        Optional<Film> result = Optional.empty();
+        try {
+            result = Optional.ofNullable((Film) query.setParameter("link", link).getSingleResult());
+        } catch (NoResultException e) {
+
+        }
+        return result;
+    }
+
+    @Override
+    public Film getRandom() {
+        Query countQuery = em.createNativeQuery("select count(*) from data.film");
+        BigInteger count = (BigInteger)countQuery.getSingleResult();
+
+        Random random = new Random();
+        int number = random.nextInt(count.intValue());
+
+        Query selectQuery = em.createQuery("select f from Film f");
+        selectQuery.setFirstResult(number);
+        selectQuery.setMaxResults(1);
+        return (Film) selectQuery.getSingleResult();
     }
 }

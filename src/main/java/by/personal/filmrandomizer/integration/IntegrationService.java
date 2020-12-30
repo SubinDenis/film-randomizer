@@ -2,6 +2,7 @@ package by.personal.filmrandomizer.integration;
 
 import by.personal.filmrandomizer.entity.Film;
 import by.personal.filmrandomizer.entity.Tag;
+import by.personal.filmrandomizer.service.FilmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,9 @@ public class IntegrationService {
 
     @Autowired
     private ParseHubRestClient parseHubRestClient;
+
+    @Autowired
+    private FilmService filmService;
 
     //    @Scheduled(cron = "0 2 * * *")
     public void runIntegration() {
@@ -38,6 +43,7 @@ public class IntegrationService {
         }
         List<Map<String, Object>> dataForAll = getDataForAll(runTokens);
         List<Film> films = extractFilmData(dataForAll);
+        films.forEach(f -> filmService.saveOrUpdate(f));
         logger.info("Integration ended!");
     }
 
@@ -66,12 +72,6 @@ public class IntegrationService {
             }
         }
         return filmList;
-    }
-
-    public void mergeData(List<Film> films) {
-
-
-
     }
 
     public List<Map<String, Object>> getDataForAll(List<String> runTokens) {

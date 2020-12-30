@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface FilmDao extends Dao<Film> {
 
     Optional<Film> findBySourceLink(String link);
+
+    Film getRandom();
 }
